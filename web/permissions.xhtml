@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Permissions Form</h1>
+
+        <!-- Permission Form Panel -->
+        <p:panel header="Permission Form" style="margin-bottom: 20px;">
+            <h:form id="permissionForm">
+                <!-- Permission ID (Hidden Field) -->
+                <h:inputHidden id="permissionId" value="#{permissionController.permission.permissionId}" />
+
+                <!-- Can Create -->
+                <p:outputLabel for="canCreate" value="Can Create:" />
+                <p:selectBooleanCheckbox id="canCreate" value="#{permissionController.permission.canCreate}" />
+                <p:message for="canCreate" display="icon" />
+
+                <!-- Can Read -->
+                <p:outputLabel for="canRead" value="Can Read:" />
+                <p:selectBooleanCheckbox id="canRead" value="#{permissionController.permission.canRead}" />
+                <p:message for="canRead" display="icon" />
+
+                <!-- Can Update -->
+                <p:outputLabel for="canUpdate" value="Can Update:" />
+                <p:selectBooleanCheckbox id="canUpdate" value="#{permissionController.permission.canUpdate}" />
+                <p:message for="canUpdate" display="icon" />
+
+                <!-- Can Delete -->
+                <p:outputLabel for="canDelete" value="Can Delete:" />
+                <p:selectBooleanCheckbox id="canDelete" value="#{permissionController.permission.canDelete}" />
+                <p:message for="canDelete" display="icon" />
+
+                <!-- Page -->
+                <p:outputLabel for="page" value="Page:" />
+                <p:selectOneMenu id="page" value="#{permissionController.permission.pageId}">
+                    <f:selectItems value="#{permissionController.pagesList}" var="page" itemValue="#{page}" itemLabel="#{page.pageName}" />
+                </p:selectOneMenu>
+                <p:message for="page" display="icon" />
+
+                <!-- Role -->
+                <p:outputLabel for="role" value="Role:" />
+                <p:selectOneMenu id="role" value="#{permissionController.permission.roleId}">
+                    <f:selectItems value="#{permissionController.rolesList}" var="role" itemValue="#{role}" itemLabel="#{role.roleName}" />
+                </p:selectOneMenu>
+                <p:message for="role" display="icon" />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save Permission" action="#{permissionController.savePermission}" icon="pi pi-save" update="permissionsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Permissions List -->
+        <h2>Permissions List</h2>
+        <p:dataTable id="permissionsTable" value="#{permissionController.permissionsList}" var="permission" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Permission ID Column -->
+            <p:column headerText="Permission ID">
+                #{permission.permissionId}
+            </p:column>
+
+            <!-- Can Create Column -->
+            <p:column headerText="Can Create">
+                #{permission.canCreate}
+            </p:column>
+
+            <!-- Can Read Column -->
+            <p:column headerText="Can Read">
+                #{permission.canRead}
+            </p:column>
+
+            <!-- Can Update Column -->
+            <p:column headerText="Can Update">
+                #{permission.canUpdate}
+            </p:column>
+
+            <!-- Can Delete Column -->
+            <p:column headerText="Can Delete">
+                #{permission.canDelete}
+            </p:column>
+
+            <!-- Page Column -->
+            <p:column headerText="Page">
+                #{permission.pageId.pageName}
+            </p:column>
+
+            <!-- Role Column -->
+            <p:column headerText="Role">
+                #{permission.roleId.roleName}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{permissionController.editPermission(permission)}" icon="pi pi-pencil" update="permissionForm" />
+                <p:commandButton value="Delete" action="#{permissionController.deletePermission(permission)}" icon="pi pi-trash" update="permissionsTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

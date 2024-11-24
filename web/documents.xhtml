@@ -1,0 +1,71 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h2>Create Document</h2>
+
+        <!-- Document Form -->
+        <p:panel header="Document Form" style="margin-bottom: 20px;">
+            <h:form id="documentForm">
+                <!-- Document Type -->
+                <p:outputLabel for="documentType" value="Document Type:" />
+                <p:inputText id="documentType" value="#{documentsBean.newDocument.documentType}" />
+                <p:message for="documentType" display="icon" />
+                <br />
+
+                <!-- Document Path -->
+                <p:outputLabel for="documentPath" value="Document Path:" />
+                <p:inputText id="documentPath" value="#{documentsBean.newDocument.documentPath}" />
+                <p:message for="documentPath" display="icon" />
+                <br />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save" action="#{documentsBean.createDocument}" icon="pi pi-check" update="documentsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Filter Section -->
+        <p:panel header="Filter Documents" style="margin-bottom: 20px;">
+            <h:form id="filterForm">
+                <p:outputLabel for="filterVerified" value="Filter by Verified:" />
+                <p:selectBooleanCheckbox id="filterVerified" value="#{documentsBean.filterByVerified}" />
+                <p:commandButton value="Apply Filter" action="#{documentsBean.getDocumentsList}" icon="pi pi-filter" update="documentsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Documents List -->
+        <h2>Documents List</h2>
+        <p:dataTable id="documentsTable" value="#{documentsBean.documentsList}" var="doc" paginator="true" rows="5" responsiveLayout="scroll">
+            <!-- Document ID Column -->
+            <p:column headerText="Document ID">
+                #{doc.documentId}
+            </p:column>
+
+            <!-- Type Column -->
+            <p:column headerText="Type">
+                #{doc.documentType}
+            </p:column>
+
+            <!-- Uploaded At Column -->
+            <p:column headerText="Uploaded At">
+                <p:outputText value="#{doc.uploadedAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:outputText>
+            </p:column>
+
+            <!-- Verified Column -->
+            <p:column headerText="Verified">
+                #{doc.isVerified ? 'Yes' : 'No'}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Delete" action="#{documentsBean.deleteDocument(doc.documentId)}" icon="pi pi-trash" update="documentsTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

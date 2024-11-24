@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Payment Form</h1>
+
+        <!-- Payment Form Panel -->
+        <p:panel header="Payment Form" style="margin-bottom: 20px;">
+            <h:form id="paymentForm">
+                <!-- Payment ID (Hidden Field) -->
+                <h:inputHidden id="paymentId" value="#{paymentController.payment.paymentId}" />
+
+                <!-- Amount -->
+                <p:outputLabel for="amount" value="Amount:" />
+                <p:inputText id="amount" value="#{paymentController.payment.amount}" />
+                <p:message for="amount" display="icon" />
+
+                <!-- Payment Date -->
+                <p:outputLabel for="paymentDate" value="Payment Date:" />
+                <p:calendar id="paymentDate" value="#{paymentController.payment.paymentDate}" pattern="yyyy-MM-dd HH:mm:ss" showButtonPanel="true" />
+                <p:message for="paymentDate" display="icon" />
+
+                <!-- Payment Status -->
+                <p:outputLabel for="paymentStatus" value="Payment Status:" />
+                <p:inputText id="paymentStatus" value="#{paymentController.payment.paymentStatus}" maxlength="9" />
+                <p:message for="paymentStatus" display="icon" />
+
+                <!-- Payment Method -->
+                <p:outputLabel for="paymentMethod" value="Payment Method:" />
+                <p:inputText id="paymentMethod" value="#{paymentController.payment.paymentMethod}" maxlength="13" />
+                <p:message for="paymentMethod" display="icon" />
+
+                <!-- Commission Percentage -->
+                <p:outputLabel for="commissionPercentage" value="Commission Percentage:" />
+                <p:inputText id="commissionPercentage" value="#{paymentController.payment.commissionPercentage}" />
+                <p:message for="commissionPercentage" display="icon" />
+
+                <!-- Commission Status -->
+                <p:outputLabel for="commissionStatus" value="Commission Status:" />
+                <p:inputText id="commissionStatus" value="#{paymentController.payment.commissionStatus}" maxlength="7" />
+                <p:message for="commissionStatus" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{paymentController.savePayment}" icon="pi pi-check" update="paymentTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Payments List -->
+        <h2>Payments List</h2>
+        <p:dataTable id="paymentTable" value="#{paymentController.paymentsList}" var="payment" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Payment ID Column -->
+            <p:column headerText="Payment ID">
+                #{payment.paymentId}
+            </p:column>
+
+            <!-- Amount Column -->
+            <p:column headerText="Amount">
+                #{payment.amount}
+            </p:column>
+
+            <!-- Payment Date Column -->
+            <p:column headerText="Payment Date">
+                #{payment.paymentDate}
+            </p:column>
+
+            <!-- Payment Status Column -->
+            <p:column headerText="Payment Status">
+                #{payment.paymentStatus}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{paymentController.editPayment(payment)}" icon="pi pi-pencil" update="paymentForm" />
+                <p:commandButton value="Delete" action="#{paymentController.deletePayment(payment)}" icon="pi pi-trash" update="paymentTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

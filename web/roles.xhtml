@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Roles Form</h1>
+
+        <!-- Role Form Panel -->
+        <p:panel header="Role Form" style="margin-bottom: 20px;">
+            <h:form id="roleForm">
+                <!-- Role ID (Hidden Field) -->
+                <h:inputHidden id="roleId" value="#{roleController.role.roleId}" />
+
+                <!-- Role Name -->
+                <p:outputLabel for="roleName" value="Role Name:" />
+                <p:inputText id="roleName" value="#{roleController.role.roleName}" required="true" />
+                <p:message for="roleName" display="icon" />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save Role" action="#{roleController.saveRole}" icon="pi pi-save" update="rolesTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Roles List -->
+        <h2>Roles List</h2>
+        <p:dataTable id="rolesTable" value="#{roleController.rolesList}" var="role" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Role ID Column -->
+            <p:column headerText="Role ID">
+                #{role.roleId}
+            </p:column>
+
+            <!-- Role Name Column -->
+            <p:column headerText="Role Name">
+                #{role.roleName}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{roleController.editRole(role)}" icon="pi pi-pencil" update="roleForm" />
+                <p:commandButton value="Delete" action="#{roleController.deleteRole(role)}" icon="pi pi-trash" update="rolesTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

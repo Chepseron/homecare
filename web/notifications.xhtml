@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Notifications Form</h1>
+
+        <!-- Notification Form -->
+        <p:panel header="Notification Form" style="margin-bottom: 20px;">
+            <h:form id="notificationForm">
+                <!-- Notification ID (hidden) -->
+                <h:inputHidden id="notificationId" value="#{notificationsController.notification.notificationId}" />
+
+                <!-- Message -->
+                <p:outputLabel for="message" value="Message:" />
+                <p:inputTextarea id="message" value="#{notificationsController.notification.message}" rows="4" cols="50" maxlength="65535" autoResize="false" />
+                <p:message for="message" display="icon" />
+
+                <!-- Status -->
+                <p:outputLabel for="status" value="Status:" />
+                <p:inputText id="status" value="#{notificationsController.notification.status}" maxlength="7" required="true" />
+                <p:message for="status" display="icon" />
+
+                <!-- Created At -->
+                <p:outputLabel for="createdAt" value="Created At:" />
+                <p:calendar id="createdAt" value="#{notificationsController.notification.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" showTime="true" />
+                <p:message for="createdAt" display="icon" />
+
+                <!-- Sent At -->
+                <p:outputLabel for="sentAt" value="Sent At:" />
+                <p:calendar id="sentAt" value="#{notificationsController.notification.sentAt}" pattern="yyyy-MM-dd HH:mm:ss" showTime="true" />
+                <p:message for="sentAt" display="icon" />
+
+                <!-- User -->
+                <p:outputLabel for="userId" value="User:" />
+                <p:selectOneMenu id="userId" value="#{notificationsController.notification.userId}">
+                    <f:selectItems value="#{notificationsController.userList}" var="user" itemValue="#{user}" itemLabel="#{user.name}" />
+                </p:selectOneMenu>
+                <p:message for="userId" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{notificationsController.saveNotification}" icon="pi pi-check" update="notificationsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Notifications Table -->
+        <h2>Notifications List</h2>
+        <p:dataTable id="notificationsTable" value="#{notificationsController.notificationsList}" var="notification" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Notification ID Column -->
+            <p:column headerText="Notification ID">
+                #{notification.notificationId}
+            </p:column>
+
+            <!-- Message Column -->
+            <p:column headerText="Message">
+                #{notification.message}
+            </p:column>
+
+            <!-- Status Column -->
+            <p:column headerText="Status">
+                #{notification.status}
+            </p:column>
+
+            <!-- Created At Column -->
+            <p:column headerText="Created At">
+                <p:outputText value="#{notification.createdAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:outputText>
+            </p:column>
+
+            <!-- Sent At Column -->
+            <p:column headerText="Sent At">
+                <p:outputText value="#{notification.sentAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:outputText>
+            </p:column>
+
+            <!-- User Column -->
+            <p:column headerText="User">
+                #{notification.userId.name}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{notificationsController.editNotification(notification)}" icon="pi pi-pencil" update="notificationForm" />
+                <p:commandButton value="Delete" action="#{notificationsController.deleteNotification(notification)}" icon="pi pi-trash" update="notificationsTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

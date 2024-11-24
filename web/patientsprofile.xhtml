@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Patient Profile Form</h1>
+
+        <!-- Patient Profile Form -->
+        <p:panel header="Patient Profile Form" style="margin-bottom: 20px;">
+            <h:form id="patientProfileForm">
+                <!-- Profile ID (Hidden Field) -->
+                <h:inputHidden id="profileId" value="#{patientProfilesController.profile.profileId}" />
+
+                <!-- Emergency Contact -->
+                <p:outputLabel for="emergencyContact" value="Emergency Contact:" />
+                <p:inputText id="emergencyContact" value="#{patientProfilesController.profile.emergencyContact}" maxlength="100" />
+                <p:message for="emergencyContact" display="icon" />
+
+                <!-- Insurance Number -->
+                <p:outputLabel for="insuranceNumber" value="Insurance Number:" />
+                <p:inputText id="insuranceNumber" value="#{patientProfilesController.profile.insuranceNumber}" maxlength="50" />
+                <p:message for="insuranceNumber" display="icon" />
+
+                <!-- Medical History -->
+                <p:outputLabel for="medicalHistory" value="Medical History:" />
+                <p:inputTextarea id="medicalHistory" value="#{patientProfilesController.profile.medicalHistory}" rows="5" maxlength="65535" />
+                <p:message for="medicalHistory" display="icon" />
+
+                <!-- Health Conditions -->
+                <p:outputLabel for="healthConditions" value="Health Conditions:" />
+                <p:inputTextarea id="healthConditions" value="#{patientProfilesController.profile.healthConditions}" rows="5" maxlength="65535" />
+                <p:message for="healthConditions" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{patientProfilesController.saveProfile}" icon="pi pi-check" update="profilesTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Patient Profiles List -->
+        <h2>Patient Profiles List</h2>
+        <p:dataTable id="profilesTable" value="#{patientProfilesController.profilesList}" var="profile" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Profile ID Column -->
+            <p:column headerText="Profile ID">
+                #{profile.profileId}
+            </p:column>
+
+            <!-- Emergency Contact Column -->
+            <p:column headerText="Emergency Contact">
+                #{profile.emergencyContact}
+            </p:column>
+
+            <!-- Insurance Number Column -->
+            <p:column headerText="Insurance Number">
+                #{profile.insuranceNumber}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{patientProfilesController.editProfile(profile)}" icon="pi pi-pencil" update="patientProfileForm" />
+                <p:commandButton value="Delete" action="#{patientProfilesController.deleteProfile(profile)}" icon="pi pi-trash" update="profilesTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

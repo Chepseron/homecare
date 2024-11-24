@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <h2>Create Commission Entry</h2>
+
+        <!-- Commission Entry Form -->
+        <p:panel header="Commission Form" style="margin-bottom: 20px;">
+            <h:form id="commissionForm">
+                <!-- Commission Percentage -->
+                <p:outputLabel for="commissionPercentage" value="Commission Percentage:" />
+                <p:inputText id="commissionPercentage" value="#{commissionsBean.newCommission.commissionPercentage}" />
+                <p:message for="commissionPercentage" display="icon" />
+                <br />
+
+                <!-- Commission Amount -->
+                <p:outputLabel for="commissionAmount" value="Commission Amount:" />
+                <p:inputText id="commissionAmount" value="#{commissionsBean.newCommission.commissionAmount}" />
+                <p:message for="commissionAmount" display="icon" />
+                <br />
+
+                <!-- Is Paid -->
+                <p:outputLabel for="isPaid" value="Is Paid:" />
+                <p:selectBooleanCheckbox id="isPaid" value="#{commissionsBean.newCommission.isPaid}" />
+                <br />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save" action="#{commissionsBean.createCommission}" icon="pi pi-check" update="commissionTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Commission Entries Table -->
+        <h2>Commission Entries</h2>
+        <p:dataTable id="commissionTable" value="#{commissionsBean.commissionsList}" var="commission" paginator="true" rows="5" responsiveLayout="scroll" style="margin-top: 20px;">
+            <!-- Commission ID Column -->
+            <p:column headerText="Commission ID">
+                #{commission.commissionId}
+            </p:column>
+
+            <!-- Commission Percentage Column -->
+            <p:column headerText="Commission Percentage">
+                #{commission.commissionPercentage}
+            </p:column>
+
+            <!-- Commission Amount Column -->
+            <p:column headerText="Commission Amount">
+                #{commission.commissionAmount}
+            </p:column>
+
+            <!-- Is Paid Column -->
+            <p:column headerText="Is Paid">
+                <p:outputLabel value="#{commission.isPaid ? 'Yes' : 'No'}" />
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Delete" action="#{commissionsBean.deleteCommission(commission.commissionId)}" icon="pi pi-trash" update="commissionTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

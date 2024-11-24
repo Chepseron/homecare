@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>User Information</h1>
+
+        <!-- User Details Form Panel -->
+        <p:panel header="User Information" style="margin-bottom: 20px;">
+            <h:form id="userForm">
+                <h:panelGrid columns="2" cellpadding="5">
+                    <!-- User ID (Disabled) -->
+                    <p:outputLabel for="userId" value="User ID:" />
+                    <p:inputText id="userId" value="#{userBean.user.userId}" disabled="true" />
+
+                    <!-- Username -->
+                    <p:outputLabel for="username" value="Username:" />
+                    <p:inputText id="username" value="#{userBean.user.username}" required="true" />
+                    <p:message for="username" display="icon" />
+
+                    <!-- Password -->
+                    <p:outputLabel for="password" value="Password:" />
+                    <p:inputSecret id="password" value="#{userBean.user.password}" required="true" />
+                    <p:message for="password" display="icon" />
+
+                    <!-- Full Name -->
+                    <p:outputLabel for="fullName" value="Full Name:" />
+                    <p:inputText id="fullName" value="#{userBean.user.fullName}" />
+
+                    <!-- Email -->
+                    <p:outputLabel for="email" value="Email:" />
+                    <p:inputText id="email" value="#{userBean.user.email}" />
+
+                    <!-- Phone -->
+                    <p:outputLabel for="phone" value="Phone:" />
+                    <p:inputText id="phone" value="#{userBean.user.phone}" />
+
+                    <!-- Date of Birth -->
+                    <p:outputLabel for="dateOfBirth" value="Date of Birth:" />
+                    <p:inputText id="dateOfBirth" value="#{userBean.user.dateOfBirth}" />
+
+                    <!-- Sex -->
+                    <p:outputLabel for="sex" value="Sex:" />
+                    <p:inputText id="sex" value="#{userBean.user.sex}" />
+
+                    <!-- Address -->
+                    <p:outputLabel for="address" value="Address:" />
+                    <p:inputTextarea id="address" value="#{userBean.user.address}" rows="5" cols="30" />
+
+                    <!-- Is Active Checkbox -->
+                    <p:outputLabel for="isActive" value="Active:" />
+                    <p:selectBooleanCheckbox id="isActive" value="#{userBean.user.isActive}" />
+
+                    <!-- Role Selection -->
+                    <p:outputLabel for="roleId" value="Role:" />
+                    <p:selectOneMenu id="roleId" value="#{userBean.user.roleId}">
+                        <f:selectItems value="#{userBean.roles}" var="role" itemValue="#{role}" itemLabel="#{role.roleName}" />
+                    </p:selectOneMenu>
+
+                    <!-- Created By and Updated By (Disabled) -->
+                    <p:outputLabel for="createdBy" value="Created By:" />
+                    <p:inputText id="createdBy" value="#{userBean.user.createdBy}" disabled="true" />
+
+                    <p:outputLabel for="updatedBy" value="Updated By:" />
+                    <p:inputText id="updatedBy" value="#{userBean.user.updatedBy}" disabled="true" />
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <!-- Created At and Updated At (Disabled) -->
+                    <p:outputLabel for="createdAt" value="Created At:" />
+                    <p:inputText id="createdAt" value="#{userBean.user.createdAt}" disabled="true" />
+
+                    <p:outputLabel for="updatedAt" value="Updated At:" />
+                    <p:inputText id="updatedAt" value="#{userBean.user.updatedAt}" disabled="true" />
+                </h:panelGrid>
+
+                <!-- Save Button with Ajax -->
+                <p:commandButton value="Save" action="#{userBean.saveUser}" icon="pi pi-save" update="userListTable" styleClass="p-mt-3" />
+
+                <!-- Form Validation Messages -->
+                <p:message for="userForm" style="color: red;" />
+            </h:form>
+        </p:panel>
+
+        <!-- User List Table -->
+        <h2>User List</h2>
+        <p:dataTable id="userListTable" value="#{userBean.users}" var="user" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- User ID Column -->
+            <p:column headerText="User ID">
+                #{user.userId}
+            </p:column>
+
+            <!-- Username Column -->
+            <p:column headerText="Username">
+                #{user.username}
+            </p:column>
+
+            <!-- Full Name Column -->
+            <p:column headerText="Full Name">
+                #{user.fullName}
+            </p:column>
+
+            <!-- Email Column -->
+            <p:column headerText="Email">
+                #{user.email}
+            </p:column>
+
+            <!-- Phone Column -->
+            <p:column headerText="Phone">
+                #{user.phone}
+            </p:column>
+
+            <!-- Role Column -->
+            <p:column headerText="Role">
+                #{user.roleId.roleName}
+            </p:column>
+
+            <!-- Active Status Column -->
+            <p:column headerText="Active">
+                #{user.isActive ? 'Yes' : 'No'}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandLink value="Edit" action="#{userBean.editUser(user.userId)}" icon="pi pi-pencil" update="userForm" />
+                <p:commandLink value="Delete" action="#{userBean.deleteUser(user.userId)}" icon="pi pi-trash" update="userListTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

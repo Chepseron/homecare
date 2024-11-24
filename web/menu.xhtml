@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Menu with Role-based Access</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <h:outputStylesheet name="styles.css"/>
+        <script>
+            // Simulating AI-like suggestions based on predefined menu items
+            const menuItems = [
+                { name: "Appointments", url: "appointments.xhtml", icon: "fa fa-calendar", roles: ["admin", "doctor"] },
+                { name: "Billing Form", url: "billingform.xhtml", icon: "fa fa-file-invoice", roles: ["admin", "accountant"] },
+                { name: "Commissions", url: "commissions.xhtml", icon: "fa fa-dollar-sign", roles: ["admin", "finance"] },
+                { name: "Conference Calls", url: "conferences.xhtml", icon: "fa fa-phone-alt", roles: ["admin", "support"] },
+                { name: "Documents", url: "documents.xhtml", icon: "fa fa-file", roles: ["admin", "staff"] },
+                { name: "Home Care Plans", url: "homecareplans.xhtml", icon: "fa fa-home", roles: ["admin", "caregiver"] },
+                { name: "Medical Images", url: "medicalimages.xhtml", icon: "fa fa-image", roles: ["doctor", "nurse"] },
+                { name: "Medical Records", url: "medicalrecords.xhtml", icon: "fa fa-folder", roles: ["admin", "doctor"] },
+                { name: "Notifications", url: "notifications.xhtml", icon: "fa fa-bell", roles: ["admin", "staff"] },
+                { name: "Pages", url: "pages.xhtml", icon: "fa fa-book", roles: ["admin"] },
+                { name: "Patient Profile", url: "patientsprofile.xhtml", icon: "fa fa-user", roles: ["doctor", "nurse"] },
+                { name: "Payment Details", url: "paymentdetails.xhtml", icon: "fa fa-credit-card", roles: ["admin", "accountant"] },
+                { name: "Payments", url: "payments.xhtml", icon: "fa fa-money-bill-wave", roles: ["admin", "finance"] },
+                { name: "Permissions", url: "permissions.xhtml", icon: "fa fa-lock", roles: ["admin"] },
+                { name: "Prescriptions", url: "prescriptions.xhtml", icon: "fa fa-prescription-bottle-alt", roles: ["doctor"] },
+                { name: "Roles", url: "roles.xhtml", icon: "fa fa-users-cog", roles: ["admin"] },
+                { name: "Sensor Data", url: "sensordata.xhtml", icon: "fa fa-sensor", roles: ["admin", "nurse"] },
+                { name: "Users", url: "users.xhtml", icon: "fa fa-users", roles: ["admin"] }
+            ];
+
+            function searchMenuItems() {
+                const query = document.getElementById('searchBar').value.toLowerCase();
+                const suggestions = menuItems.filter(item => item.name.toLowerCase().includes(query));
+                const suggestionList = document.getElementById('suggestionList');
+                suggestionList.innerHTML = '';
+
+                suggestions.forEach(item => {
+                    const suggestionItem = document.createElement('li');
+                    suggestionItem.innerHTML = `<a href="${item.url}"><i class="${item.icon}"></i> ${item.name}</a>`;
+                    suggestionList.appendChild(suggestionItem);
+                });
+            }
+        </script>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <!-- AI-powered Search Bar -->
+                <p:menuitem>
+                    <input id="searchBar" type="text" placeholder="Search..." oninput="searchMenuItems()" />
+                    <ul id="suggestionList" style="list-style-type: none; padding: 0; margin-top: 5px; background-color: #f8f8f8; border: 1px solid #ccc;">
+                        <!-- Suggestions will appear here -->
+                    </ul>
+                </p:menuitem>
+
+                <!-- Conditional rendering of menu items based on roles -->
+                <h:panelGroup rendered="#{userRoles.contains('admin')}">
+                    <p:menuitem value="Appointments" icon="fa fa-calendar" url="appointments.xhtml"/>
+                    <p:menuitem value="Billing Form" icon="fa fa-file-invoice" url="billingform.xhtml"/>
+                    <p:menuitem value="Commissions" icon="fa fa-dollar-sign" url="commissions.xhtml"/>
+                    <p:menuitem value="Conference Calls" icon="fa fa-phone-alt" url="conferences.xhtml"/>
+                    <p:menuitem value="Documents" icon="fa fa-file" url="documents.xhtml"/>
+                    <p:menuitem value="Medical Records" icon="fa fa-folder" url="medicalrecords.xhtml"/>
+                    <p:menuitem value="Pages" icon="fa fa-book" url="pages.xhtml"/>
+                    <p:menuitem value="Permissions" icon="fa fa-lock" url="permissions.xhtml"/>
+                    <p:menuitem value="Roles" icon="fa fa-users-cog" url="roles.xhtml"/>
+                    <p:menuitem value="Users" icon="fa fa-users" url="users.xhtml"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{userRoles.contains('doctor')}">
+                    <p:menuitem value="Medical Images" icon="fa fa-image" url="medicalimages.xhtml"/>
+                    <p:menuitem value="Patient Profile" icon="fa fa-user" url="patientsprofile.xhtml"/>
+                    <p:menuitem value="Prescriptions" icon="fa fa-prescription-bottle-alt" url="prescriptions.xhtml"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{userRoles.contains('nurse')}">
+                    <p:menuitem value="Medical Images" icon="fa fa-image" url="medicalimages.xhtml"/>
+                    <p:menuitem value="Patient Profile" icon="fa fa-user" url="patientsprofile.xhtml"/>
+                    <p:menuitem value="Sensor Data" icon="fa fa-sensor" url="sensordata.xhtml"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{userRoles.contains('accountant')}">
+                    <p:menuitem value="Payment Details" icon="fa fa-credit-card" url="paymentdetails.xhtml"/>
+                </h:panelGroup>
+
+                <h:panelGroup rendered="#{userRoles.contains('finance')}">
+                    <p:menuitem value="Payments" icon="fa fa-money-bill-wave" url="payments.xhtml"/>
+                </h:panelGroup>
+            </p:menubar>
+        </h:form>
+    </h:body>
+</html>

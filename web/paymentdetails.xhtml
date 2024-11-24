@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Payment Details Form</h1>
+
+        <!-- Payment Details Form -->
+        <p:panel header="Payment Details Form" style="margin-bottom: 20px;">
+            <h:form id="paymentDetailsForm">
+                <!-- Payment Detail ID (Hidden Field) -->
+                <h:inputHidden id="paymentDetailId" value="#{paymentDetailsController.paymentDetail.paymentDetailId}" />
+
+                <!-- Service Type -->
+                <p:outputLabel for="serviceType" value="Service Type:" />
+                <p:inputText id="serviceType" value="#{paymentDetailsController.paymentDetail.serviceType}" maxlength="11" />
+                <p:message for="serviceType" display="icon" />
+
+                <!-- Description -->
+                <p:outputLabel for="description" value="Description:" />
+                <p:inputTextarea id="description" value="#{paymentDetailsController.paymentDetail.description}" rows="5"/>
+                <p:message for="description" display="icon" />
+
+                <!-- Service ID (Appointment Reference) -->
+                <p:outputLabel for="serviceId" value="Service (Appointment) ID:" />
+                <p:selectOneMenu id="serviceId" value="#{paymentDetailsController.paymentDetail.serviceId}">
+                    <f:selectItems value="#{paymentDetailsController.appointmentsList}" var="appointment" itemLabel="#{appointment.appointmentId}" itemValue="#{appointment}" />
+                </p:selectOneMenu>
+                <p:message for="serviceId" display="icon" />
+
+                <!-- Payment ID -->
+                <p:outputLabel for="paymentId" value="Payment ID:" />
+                <p:selectOneMenu id="paymentId" value="#{paymentDetailsController.paymentDetail.paymentId}">
+                    <f:selectItems value="#{paymentDetailsController.paymentsList}" var="payment" itemLabel="#{payment.paymentId}" itemValue="#{payment}" />
+                </p:selectOneMenu>
+                <p:message for="paymentId" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{paymentDetailsController.savePaymentDetail}" icon="pi pi-check" update="paymentDetailsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Payment Details List -->
+        <h2>Payment Details List</h2>
+        <p:dataTable id="paymentDetailsTable" value="#{paymentDetailsController.paymentDetailsList}" var="paymentDetail" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Payment Detail ID Column -->
+            <p:column headerText="Payment Detail ID">
+                #{paymentDetail.paymentDetailId}
+            </p:column>
+
+            <!-- Service Type Column -->
+            <p:column headerText="Service Type">
+                #{paymentDetail.serviceType}
+            </p:column>
+
+            <!-- Description Column -->
+            <p:column headerText="Description">
+                #{paymentDetail.description}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{paymentDetailsController.editPaymentDetail(paymentDetail)}" icon="pi pi-pencil" update="paymentDetailsForm" />
+                <p:commandButton value="Delete" action="#{paymentDetailsController.deletePaymentDetail(paymentDetail)}" icon="pi pi-trash" update="paymentDetailsTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

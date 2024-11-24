@@ -1,0 +1,88 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Sensordata Form</h1>
+
+        <!-- Sensordata Form Panel -->
+        <p:panel header="Sensordata Form" style="margin-bottom: 20px;">
+            <h:form id="sensorDataForm">
+                <!-- Sensor Data ID (Hidden Field) -->
+                <h:inputHidden id="sensorDataId" value="#{sensorDataController.sensordata.sensorDataId}" />
+
+                <!-- Device ID -->
+                <p:outputLabel for="deviceId" value="Device ID:" />
+                <p:inputText id="deviceId" value="#{sensorDataController.sensordata.deviceId}" required="true" />
+                <p:message for="deviceId" display="icon" />
+
+                <!-- Temperature -->
+                <p:outputLabel for="temperature" value="Temperature:" />
+                <p:inputText id="temperature" value="#{sensorDataController.sensordata.temperature}" required="true" />
+                <p:message for="temperature" display="icon" />
+
+                <!-- Blood Pressure -->
+                <p:outputLabel for="bloodPressure" value="Blood Pressure:" />
+                <p:inputText id="bloodPressure" value="#{sensorDataController.sensordata.bloodPressure}" required="true" />
+                <p:message for="bloodPressure" display="icon" />
+
+                <!-- Sugar Level -->
+                <p:outputLabel for="sugarLevel" value="Sugar Level:" />
+                <p:inputText id="sugarLevel" value="#{sensorDataController.sensordata.sugarLevel}" required="true" />
+                <p:message for="sugarLevel" display="icon" />
+
+                <!-- Is Anomalous -->
+                <p:outputLabel for="isAnomalous" value="Is Anomalous:" />
+                <p:selectBooleanCheckbox id="isAnomalous" value="#{sensorDataController.sensordata.isAnomalous}" />
+                <p:message for="isAnomalous" display="icon" />
+
+                <!-- Recorded At -->
+                <p:outputLabel for="recordedAt" value="Recorded At:" />
+                <p:inputText id="recordedAt" value="#{sensorDataController.sensordata.recordedAt}" required="true" />
+                <p:message for="recordedAt" display="icon" />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save Sensordata" action="#{sensorDataController.saveSensordata}" icon="pi pi-save" update="sensorDataTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Sensordata List -->
+        <h2>Sensordata List</h2>
+        <p:dataTable id="sensorDataTable" value="#{sensorDataController.sensordataList}" var="sensorData" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Sensor Data ID Column -->
+            <p:column headerText="Sensor Data ID">
+                #{sensorData.sensorDataId}
+            </p:column>
+
+            <!-- Device ID Column -->
+            <p:column headerText="Device ID">
+                #{sensorData.deviceId}
+            </p:column>
+
+            <!-- Temperature Column -->
+            <p:column headerText="Temperature">
+                #{sensorData.temperature}
+            </p:column>
+
+            <!-- Blood Pressure Column -->
+            <p:column headerText="Blood Pressure">
+                #{sensorData.bloodPressure}
+            </p:column>
+
+            <!-- Sugar Level Column -->
+            <p:column headerText="Sugar Level">
+                #{sensorData.sugarLevel}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{sensorDataController.editSensordata(sensorData)}" icon="pi pi-pencil" update="sensorDataForm" />
+                <p:commandButton value="Delete" action="#{sensorDataController.deleteSensordata(sensorData)}" icon="pi pi-trash" update="sensorDataTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

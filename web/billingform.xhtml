@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <!-- Page specific content -->
+    <ui:define name="content">
+        <h1>Billing Form</h1>
+
+        <!-- Billing Form -->
+        <p:panel header="Billing Form" style="margin-bottom: 20px;">
+            <h:form id="billingForm">
+                <!-- Amount field -->
+                <p:outputLabel for="amount" value="Amount:" />
+                <p:inputText id="amount" value="#{billingController.billing.amount}" required="true" />
+                <p:message for="amount" display="icon" />
+
+                <!-- Payment Status field -->
+                <p:outputLabel for="paymentStatus" value="Payment Status:" />
+                <p:inputText id="paymentStatus" value="#{billingController.billing.paymentStatus}" required="true" maxlength="7" />
+                <p:message for="paymentStatus" display="icon" />
+
+                <!-- Payment Method field -->
+                <p:outputLabel for="paymentMethod" value="Payment Method:" />
+                <p:inputText id="paymentMethod" value="#{billingController.billing.paymentMethod}" required="true" maxlength="9" />
+                <p:message for="paymentMethod" display="icon" />
+
+                <!-- Paid Date field -->
+                <p:outputLabel for="paidDate" value="Paid Date:" />
+                <p:calendar id="paidDate" value="#{billingController.billing.paidDate}" required="true" pattern="yyyy-MM-dd" />
+                <p:message for="paidDate" display="icon" />
+
+                <!-- Bill Generated At field -->
+                <p:outputLabel for="billGeneratedAt" value="Bill Generated At:" />
+                <p:calendar id="billGeneratedAt" value="#{billingController.billing.billGeneratedAt}" required="true" pattern="yyyy-MM-dd HH:mm:ss" timeOnly="true" />
+                <p:message for="billGeneratedAt" display="icon" />
+
+                <!-- Forwarded To field -->
+                <p:outputLabel for="forwardedTo" value="Forwarded To:" />
+                <p:inputText id="forwardedTo" value="#{billingController.billing.forwardedTo}" maxlength="10" />
+                <p:message for="forwardedTo" display="icon" />
+
+                <!-- Patient Dropdown -->
+                <p:outputLabel for="patientId" value="Patient:" />
+                <p:selectOneMenu id="patientId" value="#{billingController.billing.patientId}">
+                    <f:selectItems value="#{billingController.patientList}" var="user" itemValue="#{user}" itemLabel="#{user.name}" />
+                </p:selectOneMenu>
+                <p:message for="patientId" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{billingController.saveBilling}" icon="pi pi-check" update="billingTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Billing Table -->
+        <h2>Billing List</h2>
+        <p:dataTable id="billingTable" value="#{billingController.billingList}" var="billing" paginator="true" rows="10" responsiveLayout="scroll">
+            <p:column headerText="Bill ID">
+                #{billing.billId}
+            </p:column>
+            <p:column headerText="Amount">
+                #{billing.amount}
+            </p:column>
+            <p:column headerText="Payment Status">
+                #{billing.paymentStatus}
+            </p:column>
+            <p:column headerText="Payment Method">
+                #{billing.paymentMethod}
+            </p:column>
+            <p:column headerText="Paid Date">
+                <h:outputText value="#{billing.paidDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Bill Generated At">
+                <h:outputText value="#{billing.billGeneratedAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Forwarded To">
+                #{billing.forwardedTo}
+            </p:column>
+            <p:column headerText="Patient">
+                #{billing.patientId.name}
+            </p:column>
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{billingController.editBilling(billing)}" icon="pi pi-pencil" />
+                <p:commandButton value="Delete" action="#{billingController.deleteBilling(billing)}" icon="pi pi-trash" update="billingTable" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,134 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Prescriptions Form</h1>
+
+        <!-- Prescription Form Panel -->
+        <p:panel header="Prescription Form" style="margin-bottom: 20px;">
+            <h:form id="prescriptionForm">
+                <!-- Prescription ID (Hidden Field) -->
+                <h:inputHidden id="prescriptionId" value="#{prescriptionController.prescription.prescriptionId}" />
+
+                <!-- Medication -->
+                <p:outputLabel for="medication" value="Medication:" />
+                <p:inputText id="medication" value="#{prescriptionController.prescription.medication}" />
+                <p:message for="medication" display="icon" />
+
+                <!-- Dosage -->
+                <p:outputLabel for="dosage" value="Dosage:" />
+                <p:inputText id="dosage" value="#{prescriptionController.prescription.dosage}" />
+                <p:message for="dosage" display="icon" />
+
+                <!-- Frequency -->
+                <p:outputLabel for="frequency" value="Frequency:" />
+                <p:inputText id="frequency" value="#{prescriptionController.prescription.frequency}" />
+                <p:message for="frequency" display="icon" />
+
+                <!-- Pharmacy -->
+                <p:outputLabel for="pharmacy" value="Pharmacy:" />
+                <p:inputText id="pharmacy" value="#{prescriptionController.prescription.pharmacy}" />
+                <p:message for="pharmacy" display="icon" />
+
+                <!-- Prescription Status -->
+                <p:outputLabel for="prescriptionStatus" value="Prescription Status:" />
+                <p:inputText id="prescriptionStatus" value="#{prescriptionController.prescription.prescriptionStatus}" />
+                <p:message for="prescriptionStatus" display="icon" />
+
+                <!-- Issued At (Date) -->
+                <p:outputLabel for="issuedAt" value="Issued At:" />
+                <p:calendar id="issuedAt" value="#{prescriptionController.prescription.issuedAt}" pattern="yyyy-MM-dd HH:mm:ss" showTime="true" />
+                <p:message for="issuedAt" display="icon" />
+
+                <!-- Patient -->
+                <p:outputLabel for="patient" value="Patient:" />
+                <p:selectOneMenu id="patient" value="#{prescriptionController.prescription.patientId}">
+                    <f:selectItems value="#{prescriptionController.patientsList}" var="patient" itemValue="#{patient}" itemLabel="#{patient.fullName}" />
+                </p:selectOneMenu>
+                <p:message for="patient" display="icon" />
+
+                <!-- Doctor -->
+                <p:outputLabel for="doctor" value="Doctor:" />
+                <p:selectOneMenu id="doctor" value="#{prescriptionController.prescription.doctorId}">
+                    <f:selectItems value="#{prescriptionController.doctorsList}" var="doctor" itemValue="#{doctor}" itemLabel="#{doctor.fullName}" />
+                </p:selectOneMenu>
+                <p:message for="doctor" display="icon" />
+
+                <!-- Filled By -->
+                <p:outputLabel for="filledBy" value="Filled By:" />
+                <p:selectOneMenu id="filledBy" value="#{prescriptionController.prescription.filledBy}">
+                    <f:selectItems value="#{prescriptionController.pharmacistsList}" var="pharmacist" itemValue="#{pharmacist}" itemLabel="#{pharmacist.fullName}" />
+                </p:selectOneMenu>
+                <p:message for="filledBy" display="icon" />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save Prescription" action="#{prescriptionController.savePrescription}" icon="pi pi-save" update="prescriptionsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Prescriptions List -->
+        <h2>Prescriptions List</h2>
+        <p:dataTable id="prescriptionsTable" value="#{prescriptionController.prescriptionsList}" var="prescription" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Prescription ID Column -->
+            <p:column headerText="Prescription ID">
+                #{prescription.prescriptionId}
+            </p:column>
+
+            <!-- Medication Column -->
+            <p:column headerText="Medication">
+                #{prescription.medication}
+            </p:column>
+
+            <!-- Dosage Column -->
+            <p:column headerText="Dosage">
+                #{prescription.dosage}
+            </p:column>
+
+            <!-- Frequency Column -->
+            <p:column headerText="Frequency">
+                #{prescription.frequency}
+            </p:column>
+
+            <!-- Pharmacy Column -->
+            <p:column headerText="Pharmacy">
+                #{prescription.pharmacy}
+            </p:column>
+
+            <!-- Prescription Status Column -->
+            <p:column headerText="Prescription Status">
+                #{prescription.prescriptionStatus}
+            </p:column>
+
+            <!-- Issued At Column -->
+            <p:column headerText="Issued At">
+                #{prescription.issuedAt}
+            </p:column>
+
+            <!-- Patient Column -->
+            <p:column headerText="Patient">
+                #{prescription.patientId.fullName}
+            </p:column>
+
+            <!-- Doctor Column -->
+            <p:column headerText="Doctor">
+                #{prescription.doctorId.fullName}
+            </p:column>
+
+            <!-- Filled By Column -->
+            <p:column headerText="Filled By">
+                #{prescription.filledBy.fullName}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{prescriptionController.editPrescription(prescription)}" icon="pi pi-pencil" update="prescriptionForm" />
+                <p:commandButton value="Delete" action="#{prescriptionController.deletePrescription(prescription)}" icon="pi pi-trash" update="prescriptionsTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

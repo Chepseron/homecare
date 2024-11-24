@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h2>Create Participant</h2>
+
+        <!-- Participant Creation Form -->
+        <p:panel header="Participant Form" style="margin-bottom: 20px;">
+            <h:form id="participantForm">
+                <!-- Role -->
+                <p:outputLabel for="role" value="Role:" />
+                <p:inputText id="role" value="#{conferenceCallParticipantsBean.newParticipant.role}" />
+                <p:message for="role" display="icon" />
+                <br />
+
+                <!-- Call ID -->
+                <p:outputLabel for="callId" value="Call ID:" />
+                <p:inputText id="callId" value="#{conferenceCallParticipantsBean.newParticipant.callId.callId}" />
+                <p:message for="callId" display="icon" />
+                <br />
+
+                <!-- User ID -->
+                <p:outputLabel for="userId" value="User ID:" />
+                <p:inputText id="userId" value="#{conferenceCallParticipantsBean.newParticipant.userId.userId}" />
+                <p:message for="userId" display="icon" />
+                <br />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save" action="#{conferenceCallParticipantsBean.createParticipant}" icon="pi pi-check" update="participantTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Participants List -->
+        <h2>Participants List</h2>
+        <p:dataTable id="participantTable" value="#{conferenceCallParticipantsBean.participantsList}" var="participant" paginator="true" rows="5" responsiveLayout="scroll" style="margin-top: 20px;">
+            <!-- Participant ID Column -->
+            <p:column headerText="Participant ID">
+                #{participant.participantId}
+            </p:column>
+
+            <!-- Role Column -->
+            <p:column headerText="Role">
+                #{participant.role}
+            </p:column>
+
+            <!-- Joined At Column -->
+            <p:column headerText="Joined At">
+                <p:outputText value="#{participant.joinedAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:outputText>
+            </p:column>
+
+            <!-- Left At Column -->
+            <p:column headerText="Left At">
+                <p:outputText value="#{participant.leftAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:outputText>
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Delete" action="#{conferenceCallParticipantsBean.deleteParticipant(participant.participantId)}" icon="pi pi-trash" update="participantTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

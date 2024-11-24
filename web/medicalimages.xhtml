@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Medical Images Form</h1>
+
+        <!-- Medical Image Form -->
+        <p:panel header="Medical Image Form" style="margin-bottom: 20px;">
+            <h:form id="medicalImageForm">
+                <!-- Image ID (hidden) -->
+                <h:inputHidden id="imageId" value="#{medicalImagesController.medicalImage.imageId}" />
+
+                <!-- Image Type -->
+                <p:outputLabel for="imageType" value="Image Type:" />
+                <p:inputText id="imageType" value="#{medicalImagesController.medicalImage.imageType}" maxlength="5" required="true" />
+                <p:message for="imageType" display="icon" />
+
+                <!-- Image URL -->
+                <p:outputLabel for="imageUrl" value="Image URL:" />
+                <p:inputText id="imageUrl" value="#{medicalImagesController.medicalImage.imageUrl}" maxlength="255" required="true" />
+                <p:message for="imageUrl" display="icon" />
+
+                <!-- Image Description -->
+                <p:outputLabel for="imageDescription" value="Image Description:" />
+                <p:inputTextarea id="imageDescription" value="#{medicalImagesController.medicalImage.imageDescription}" rows="4" cols="50" />
+                <p:message for="imageDescription" display="icon" />
+
+                <!-- Uploaded At -->
+                <p:outputLabel for="uploadedAt" value="Uploaded At:" />
+                <p:inputText id="uploadedAt" value="#{medicalImagesController.medicalImage.uploadedAt}" required="true">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:inputText>
+                <p:message for="uploadedAt" display="icon" />
+
+                <!-- Patient -->
+                <p:outputLabel for="patientId" value="Patient:" />
+                <p:selectOneMenu id="patientId" value="#{medicalImagesController.medicalImage.patientId}">
+                    <f:selectItems value="#{medicalImagesController.patientList}" var="user" itemValue="#{user}" itemLabel="#{user.name}" />
+                </p:selectOneMenu>
+                <p:message for="patientId" display="icon" />
+
+                <!-- Uploaded By -->
+                <p:outputLabel for="uploadedBy" value="Uploaded By:" />
+                <p:selectOneMenu id="uploadedBy" value="#{medicalImagesController.medicalImage.uploadedBy}">
+                    <f:selectItems value="#{medicalImagesController.uploadedByList}" var="user" itemValue="#{user}" itemLabel="#{user.name}" />
+                </p:selectOneMenu>
+                <p:message for="uploadedBy" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{medicalImagesController.saveMedicalImage}" icon="pi pi-check" update="imagesTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Medical Images List -->
+        <h2>Medical Images List</h2>
+        <p:dataTable id="imagesTable" value="#{medicalImagesController.medicalImagesList}" var="image" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Image ID Column -->
+            <p:column headerText="Image ID">
+                #{image.imageId}
+            </p:column>
+
+            <!-- Image Type Column -->
+            <p:column headerText="Image Type">
+                #{image.imageType}
+            </p:column>
+
+            <!-- Image URL Column -->
+            <p:column headerText="Image URL">
+                #{image.imageUrl}
+            </p:column>
+
+            <!-- Image Description Column -->
+            <p:column headerText="Image Description">
+                #{image.imageDescription}
+            </p:column>
+
+            <!-- Uploaded At Column -->
+            <p:column headerText="Uploaded At">
+                <p:outputText value="#{image.uploadedAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:outputText>
+            </p:column>
+
+            <!-- Patient Column -->
+            <p:column headerText="Patient">
+                #{image.patientId.name}
+            </p:column>
+
+            <!-- Uploaded By Column -->
+            <p:column headerText="Uploaded By">
+                #{image.uploadedBy.name}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{medicalImagesController.editMedicalImage(image)}" icon="pi pi-pencil" update="medicalImageForm" />
+                <p:commandButton value="Delete" action="#{medicalImagesController.deleteMedicalImage(image)}" icon="pi pi-trash" update="imagesTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

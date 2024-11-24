@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <!-- Page specific content goes here -->
+    <ui:define name="content">
+        <h2>Create Appointment</h2>
+        <h:form>
+            <h:outputLabel value="Appointment Type:" />
+            <h:inputText value="#{appointmentsBean.newAppointment.appointmentType}" />
+            <br />
+            <h:outputLabel value="Status:" />
+            <h:inputText value="#{appointmentsBean.newAppointment.status}" />
+            <br />
+            <h:commandButton value="Save" action="#{appointmentsBean.createAppointment}" />
+        </h:form>
+
+        <h2>Appointments List</h2>
+        <h:dataTable value="#{appointmentsBean.appointmentsList}" var="appointment">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                #{appointment.appointmentId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Type</f:facet>
+                #{appointment.appointmentType}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Status</f:facet>
+                #{appointment.status}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Actions</f:facet>
+                <h:commandButton value="Delete" action="#{appointmentsBean.deleteAppointment(appointment.appointmentId)}" />
+            </h:column>
+        </h:dataTable>
+    </ui:define>
+</ui:composition>

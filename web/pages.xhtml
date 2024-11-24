@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Pages Form</h1>
+
+        <!-- Page Form -->
+        <p:panel header="Page Form" style="margin-bottom: 20px;">
+            <h:form id="pageForm">
+                <!-- Page ID (Hidden Field) -->
+                <h:inputHidden id="pageId" value="#{pagesController.page.pageId}" />
+
+                <!-- Page Name -->
+                <p:outputLabel for="pageName" value="Page Name:" />
+                <p:inputText id="pageName" value="#{pagesController.page.pageName}" required="true" maxlength="100" />
+                <p:message for="pageName" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{pagesController.savePage}" icon="pi pi-check" update="pagesTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Pages Table -->
+        <h2>Pages List</h2>
+        <p:dataTable id="pagesTable" value="#{pagesController.pagesList}" var="page" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Page ID Column -->
+            <p:column headerText="Page ID">
+                #{page.pageId}
+            </p:column>
+
+            <!-- Page Name Column -->
+            <p:column headerText="Page Name">
+                #{page.pageName}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{pagesController.editPage(page)}" icon="pi pi-pencil" update="pageForm" />
+                <p:commandButton value="Delete" action="#{pagesController.deletePage(page)}" icon="pi pi-trash" update="pagesTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

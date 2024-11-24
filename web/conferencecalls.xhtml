@@ -1,0 +1,63 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h2>Create Conference Call</h2>
+
+        <!-- Conference Call Form -->
+        <p:panel header="Conference Call Form" style="margin-bottom: 20px;">
+            <h:form id="conferenceCallForm">
+                <!-- Call Title -->
+                <p:outputLabel for="callTitle" value="Call Title:" />
+                <p:inputText id="callTitle" value="#{ManagementBean.newCall.callTitle}" />
+                <p:message for="callTitle" display="icon" />
+                <br />
+
+                <!-- Scheduled At -->
+                <p:outputLabel for="scheduledAt" value="Scheduled At:" />
+                <p:calendar id="scheduledAt" value="#{ManagementBean.newCall.scheduledAt}" pattern="yyyy-MM-dd HH:mm:ss" showTime="true" />
+                <p:message for="scheduledAt" display="icon" />
+                <br />
+
+                <!-- Call Notes -->
+                <p:outputLabel for="callNotes" value="Call Notes:" />
+                <p:inputTextarea id="callNotes" value="#{ManagementBean.newCall.callNotes}" autoResize="true" />
+                <p:message for="callNotes" display="icon" />
+                <br />
+
+                <!-- Save Button -->
+                <p:commandButton value="Save" action="#{ManagementBean.createCall}" icon="pi pi-check" update="callsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Conference Calls List -->
+        <h2>Conference Calls List</h2>
+        <p:dataTable id="callsTable" value="#{ManagementBean.callsList}" var="call" paginator="true" rows="5" responsiveLayout="scroll" style="margin-top: 20px;">
+            <!-- Call ID Column -->
+            <p:column headerText="Call ID">
+                #{call.callId}
+            </p:column>
+
+            <!-- Title Column -->
+            <p:column headerText="Title">
+                #{call.callTitle}
+            </p:column>
+
+            <!-- Scheduled At Column -->
+            <p:column headerText="Scheduled At">
+                <p:outputText value="#{call.scheduledAt}">
+                    <f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss" />
+                </p:outputText>
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Delete" action="#{ManagementBean.deleteCall(call.callId)}" icon="pi pi-trash" update="callsTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

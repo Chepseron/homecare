@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="index.xhtml">
+
+    <ui:define name="content">
+        <!-- Page Header -->
+        <h1>Medical Records Form</h1>
+
+        <!-- Medical Record Form -->
+        <p:panel header="Medical Record Form" style="margin-bottom: 20px;">
+            <h:form id="medicalRecordForm">
+                <!-- Record ID (hidden) -->
+                <h:inputHidden id="recordId" value="#{medicalRecordsController.medicalRecord.recordId}" />
+
+                <!-- Diagnosis -->
+                <p:outputLabel for="diagnosis" value="Diagnosis:" />
+                <p:inputTextarea id="diagnosis" value="#{medicalRecordsController.medicalRecord.diagnosis}" rows="4" cols="50" maxlength="65535" autoResize="false" />
+                <p:message for="diagnosis" display="icon" />
+
+                <!-- Prescriptions -->
+                <p:outputLabel for="prescriptions" value="Prescriptions:" />
+                <p:inputTextarea id="prescriptions" value="#{medicalRecordsController.medicalRecord.prescriptions}" rows="4" cols="50" maxlength="65535" autoResize="false" />
+                <p:message for="prescriptions" display="icon" />
+
+                <!-- Referrals -->
+                <p:outputLabel for="referrals" value="Referrals:" />
+                <p:inputTextarea id="referrals" value="#{medicalRecordsController.medicalRecord.referrals}" rows="4" cols="50" maxlength="65535" autoResize="false" />
+                <p:message for="referrals" display="icon" />
+
+                <!-- Health Plan -->
+                <p:outputLabel for="healthPlan" value="Health Plan:" />
+                <p:inputTextarea id="healthPlan" value="#{medicalRecordsController.medicalRecord.healthPlan}" rows="4" cols="50" maxlength="65535" autoResize="false" />
+                <p:message for="healthPlan" display="icon" />
+
+                <!-- Short Term Goals -->
+                <p:outputLabel for="shortTermGoals" value="Short Term Goals:" />
+                <p:inputTextarea id="shortTermGoals" value="#{medicalRecordsController.medicalRecord.shortTermGoals}" rows="4" cols="50" maxlength="65535" autoResize="false" />
+                <p:message for="shortTermGoals" display="icon" />
+
+                <!-- Long Term Goals -->
+                <p:outputLabel for="longTermGoals" value="Long Term Goals:" />
+                <p:inputTextarea id="longTermGoals" value="#{medicalRecordsController.medicalRecord.longTermGoals}" rows="4" cols="50" maxlength="65535" autoResize="false" />
+                <p:message for="longTermGoals" display="icon" />
+
+                <!-- Visit Date -->
+                <p:outputLabel for="visitDate" value="Visit Date:" />
+                <p:calendar id="visitDate" value="#{medicalRecordsController.medicalRecord.visitDate}" pattern="yyyy-MM-dd" />
+                <p:message for="visitDate" display="icon" />
+
+                <!-- Record Status -->
+                <p:outputLabel for="recordStatus" value="Record Status:" />
+                <p:inputText id="recordStatus" value="#{medicalRecordsController.medicalRecord.recordStatus}" maxlength="8" required="true" />
+                <p:message for="recordStatus" display="icon" />
+
+                <!-- Created At -->
+                <p:outputLabel for="createdAt" value="Created At:" />
+                <p:calendar id="createdAt" value="#{medicalRecordsController.medicalRecord.createdAt}" pattern="yyyy-MM-dd HH:mm:ss" showTime="true" />
+                <p:message for="createdAt" display="icon" />
+
+                <!-- Updated At -->
+                <p:outputLabel for="updatedAt" value="Updated At:" />
+                <p:calendar id="updatedAt" value="#{medicalRecordsController.medicalRecord.updatedAt}" pattern="yyyy-MM-dd HH:mm:ss" showTime="true" />
+                <p:message for="updatedAt" display="icon" />
+
+                <!-- Patient -->
+                <p:outputLabel for="patientId" value="Patient:" />
+                <p:selectOneMenu id="patientId" value="#{medicalRecordsController.medicalRecord.patientId}">
+                    <f:selectItems value="#{medicalRecordsController.patientList}" var="user" itemValue="#{user}" itemLabel="#{user.name}" />
+                </p:selectOneMenu>
+                <p:message for="patientId" display="icon" />
+
+                <!-- Doctor -->
+                <p:outputLabel for="doctorId" value="Doctor:" />
+                <p:selectOneMenu id="doctorId" value="#{medicalRecordsController.medicalRecord.doctorId}">
+                    <f:selectItems value="#{medicalRecordsController.doctorList}" var="user" itemValue="#{user}" itemLabel="#{user.name}" />
+                </p:selectOneMenu>
+                <p:message for="doctorId" display="icon" />
+
+                <!-- Updated By -->
+                <p:outputLabel for="updatedBy" value="Updated By:" />
+                <p:selectOneMenu id="updatedBy" value="#{medicalRecordsController.medicalRecord.updatedBy}">
+                    <f:selectItems value="#{medicalRecordsController.updatedByList}" var="user" itemValue="#{user}" itemLabel="#{user.name}" />
+                </p:selectOneMenu>
+                <p:message for="updatedBy" display="icon" />
+
+                <!-- Submit Button -->
+                <p:commandButton value="Submit" action="#{medicalRecordsController.saveMedicalRecord}" icon="pi pi-check" update="recordsTable" styleClass="p-mt-3" />
+            </h:form>
+        </p:panel>
+
+        <!-- Medical Records Table -->
+        <h2>Medical Records List</h2>
+        <p:dataTable id="recordsTable" value="#{medicalRecordsController.medicalRecordsList}" var="record" paginator="true" rows="10" responsiveLayout="scroll">
+            <!-- Record ID Column -->
+            <p:column headerText="Record ID">
+                #{record.recordId}
+            </p:column>
+
+            <!-- Diagnosis Column -->
+            <p:column headerText="Diagnosis">
+                #{record.diagnosis}
+            </p:column>
+
+            <!-- Prescriptions Column -->
+            <p:column headerText="Prescriptions">
+                #{record.prescriptions}
+            </p:column>
+
+            <!-- Visit Date Column -->
+            <p:column headerText="Visit Date">
+                <p:outputText value="#{record.visitDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" />
+                </p:outputText>
+            </p:column>
+
+            <!-- Record Status Column -->
+            <p:column headerText="Record Status">
+                #{record.recordStatus}
+            </p:column>
+
+            <!-- Patient Column -->
+            <p:column headerText="Patient">
+                #{record.patientId.name}
+            </p:column>
+
+            <!-- Doctor Column -->
+            <p:column headerText="Doctor">
+                #{record.doctorId.name}
+            </p:column>
+
+            <!-- Actions Column -->
+            <p:column headerText="Actions">
+                <p:commandButton value="Edit" action="#{medicalRecordsController.editMedicalRecord(record)}" icon="pi pi-pencil" update="medicalRecordForm" />
+                <p:commandButton value="Delete" action="#{medicalRecordsController.deleteMedicalRecord(record)}" icon="pi pi-trash" update="recordsTable" styleClass="p-button-danger p-button-text" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
